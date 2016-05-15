@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg" 
+     xmlns:xlink="http://www.w3.org/1999/xlink" 
+     width="100%" height="100%"> 
+  <defs>
+     <pattern id="checkerPattern3" 
+              width="20" height="20"
+              patternUnits="userSpaceOnUse">
+        <rect fill="red"
+              x="0"  y="0"  width="10" height="10"/> 
+        <rect fill="yellow"
+              x="10" y="0"  width="10" height="10"/> 
+        <rect fill="yellow"
+              x="0"  y="10" width="10" height="10"/> 
+        <rect fill="red"
+              x="10" y="10" width="10" height="10"/> 
+     </pattern>
+
+     <radialGradient id="yellowCircle" 
+                     gradientUnits="objectBoundingBox"
+                     fx="70%" fy="70%">
+       <stop offset="0%"   style="stop-color:#FFFFFF"/>
+       <stop offset="40%"  style="stop-color:#AAAA00"/>
+       <stop offset="100%" style="stop-color:#666600"/>
+     </radialGradient>
+      
+     <circle id="3DYellowCircle" cx="0" cy="0" r="40" 
+             style="fill:url(#yellowCircle)"/>
+
+     <radialGradient id="redCircle" 
+                     gradientUnits="objectBoundingBox"
+                     fx="70%" fy="70%">
+       <stop offset="0%"   style="stop-color:#FFFFFF"/>
+       <stop offset="40%"  style="stop-color:#AA0000"/>
+       <stop offset="100%" style="stop-color:#660000"/>
+     </radialGradient>
+      
+     <circle id="3DRedCircle" cx="0" cy="0" r="80" 
+             style="fill:url(#redCircle)"/>
+
+     <radialGradient id="redEllipse" 
+                     gradientUnits="objectBoundingBox"
+                     fx="70%" fy="70%">
+       <stop offset="0%"   style="stop-color:#FFFFFF"/>
+       <stop offset="40%"  style="stop-color:#AA0000"/>
+       <stop offset="100%" style="stop-color:#660000"/>
+     </radialGradient>
+      
+     <ellipse id="3DRedEllipse" cx="0"  cy="0" 
+                                rx="80" ry="120"
+             style="fill:url(#redEllipse)"/>
+
+     <radialGradient id="greenCircle" 
+                     gradientUnits="objectBoundingBox"
+                     fx="70%" fy="70%">
+       <stop offset="0%"   style="stop-color:#FFFFFF"/>
+       <stop offset="40%"  style="stop-color:#00AA00"/>
+       <stop offset="100%" style="stop-color:#006600"/>
+     </radialGradient>
+      
+     <circle id="3DGreenCircle" cx="0" cy="0" r="20" 
+             style="fill:url(#greenCircle)"/>
+
+     <radialGradient id="blueCircle" 
+                     gradientUnits="objectBoundingBox"
+                     fx="70%" fy="70%">
+       <stop offset="0%"   style="stop-color:#FFFFFF"/>
+       <stop offset="40%"  style="stop-color:#0000AA"/>
+       <stop offset="100%" style="stop-color:#000066"/>
+     </radialGradient>
+      
+     <circle id="3DBlueCircle" cx="0" cy="0" r="40" 
+             style="fill:url(#blueCircle)"/>
+
+     <path    id="arcEye" 
+              d="m0,0 a30,30 0 0,0 40,0 
+                      a30,30 0 0,0 0,40
+                      a30,30 0 0,0 -40,0 
+                      a30,30 0 0,0 0,-40" 
+              style="fill:url(#yellowCircle)"/>
+
+<!--
+     <path    id="ellipticArcHead" 
+              d="m0,0 a120,120 0 0,0 200,0 
+                      a100,100 0 0,1 0,100
+                      a50,50   0 0,0 0,40
+                      a100,100 0 0,1 0,100
+                      a120,120 0 0,0 -200,0 
+                      a180,180 0 0,1 0,-120
+                      a100,100 0 0,0 0,-120"
+              style="fill:url(#redCircle)"/>
+-->
+     <path    id="ellipticArcHead" 
+              d="m0,0 a120,120 0 0,1 80,-40 
+                      a50,50   0 0,0 10,-10
+                      a50,50   0 0,1 70,50
+                      a30,30   0 0,1 40,0
+                      a20,20   0 0,1  0,40"
+              style="fill:url(#redCircle)"/>
+
+     <ellipse id="topShadow" cx="0" cy="0" rx="90" ry="30"
+              style="fill:url(#blueCircle)"/>
+
+     <ellipse id="sideShadow" cx="0" cy="0" rx="20" ry="120"
+              style="fill:url(#blueCircle)"/>
+
+     <ellipse id="outerMouth" cx="0" cy="0" rx="60" ry="20"
+              style="fill:url(#yellowCircle)"/>
+
+     <rect    id="lipLine" x="0" y="0" 
+              width="60" height="2"
+              style="fill:red"/>
+
+     <path    id="nose1" 
+              d="m0,0 l40,0 -20,-20"
+              style="fill:url(#blueCircle)"/>
+
+     <rect    id="nose2" x="0" y="0" 
+              width="10" height="120"
+              style="fill:url(#blueCircle)"/>
+
+     <path    id="nose3" 
+              d="m0,40 a20,20 0 0,1 0,60
+                       a40,40 0 0,0 0,-60"
+              style="fill:url(#blueCircle)"/>
+
+     <path    id="nose3CB" 
+              d="m0,40 a20,20 0 0,1 0,60
+                       a40,40 0 0,0 0,-60"
+              opacity=".5"
+              style="fill:url(#checkerPattern3)"/>
+
+     <path    id="nose4" 
+              d="m0,50 l0,20 -30,-10 30,-10"
+              style="fill:url(#blueCircle)"/>
+
+     <path    id="nose5" 
+              d="m-30,120 l60,0 -10,-20 -40,0 -10,-10"
+              style="fill:url(#blueCircle)"/>
+
+     <ellipse id="innerMouth" cx="0" cy="0" rx="30" ry="8"
+              style="fill:url(#greenCircle)"/>
+
+     <path    id="leftBrow" 
+              d="m0,0 a80,80 0 0,1 80,-40 l0,20 -80,20"
+              style="fill:url(#blueCircle)"/>
+
+     <path    id="leftBrowCB" 
+              d="m0,0 a80,80 0 0,1 80,-40 l0,20 -80,20"
+              opacity=".5"
+              style="fill:url(#checkerPattern3)"/>
+
+     <path    id="rightBrow" 
+              d="m0,0 a80,80 0 0,0 -80,-40 l0,20 80,20"
+              style="fill:url(#redCircle)"/>
+
+     <path    id="arcEar" 
+              d="m0,0 a120,120 0 0,0 60,-60 
+                      a80,180  0 0,1 -30,60 
+                      a15,15   0 0,1 -30,0" 
+              opacity=".5"
+              style="fill:url(#checkerPattern3)"/>
+
+     <ellipse id="outerEar" cx="0" cy="0" rx="20" ry="40"
+              style="fill:url(#blueCircle)"/>
+
+     <ellipse id="innerEar" cx="0" cy="0" rx="8"  ry="20"
+              style="fill:url(#redCircle)"/>
+
+     <ellipse id="nostril"  cx="0" cy="0" rx="3"  ry="2"
+              style="fill:black"/>
+
+     <ellipse id="eyeCenter" cx="0" cy="0" rx="4"  ry="4"
+              style="fill:black"/>
+  </defs>
+
+ <g transform="translate(180,150)"> 
+  <g transform="scale(1.25,1.25)">
+   <use xlink:href="#outerEar"        x="10"  y="120"/>
+   <use xlink:href="#innerEar"        x="10"  y="120"/>
+
+   <use xlink:href="#arcEar"          x="190" y="120"/>
+<!--
+   <use xlink:href="#outerEar"        x="180" y="120"/>
+   <use xlink:href="#innerEar"        x="180" y="120"/>
+-->
+   <use xlink:href="#ellipticArcHead" x="0"   y="0"/>
+
+   <!-- eyes:  nested ellipses and star eye -->
+   <use xlink:href="#3DGreenCircle"   x="50"  y="70"/>
+   <use xlink:href="#eyeCenter"       x="50"  y="80"/>
+   <use xlink:href="#arcEye"          x="140" y="60"/>
+   <use xlink:href="#eyeCenter"       x="160" y="80"/>
+
+   <use xlink:href="#leftBrow"        x="5"   y="45"/>
+   <use xlink:href="#leftBrowCB"      x="5"   y="45"/>
+   <use xlink:href="#rightBrow"       x="170" y="45"/>
+   <use xlink:href="#nose1"           x="70"  y="50"/>
+   <use xlink:href="#nose2"           x="85"  y="50"/>
+   <use xlink:href="#nose3"           x="95"  y="50"/>
+   <use xlink:href="#nose3CB"         x="95"  y="50"/>
+   <use xlink:href="#nose4"           x="85"  y="50"/>
+   <use xlink:href="#nose5"           x="85"  y="70"/>
+   <use xlink:href="#nostril"         x="105" y="160"/>
+   <use xlink:href="#nostril"         x="75"  y="160"/>
+   <use xlink:href="#outerMouth"      x="80"  y="215"/>
+   <use xlink:href="#innerMouth"      x="80"  y="215"/>
+   <use xlink:href="#lipLine"         x="50"  y="215"/>
+  </g>
+ </g>
+</svg>

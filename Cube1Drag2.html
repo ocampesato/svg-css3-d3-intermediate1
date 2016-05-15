@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8" />
+   <title>Create a Cube</title>
+   <script src="d3.min.js"></script>
+ </head>
+
+ <body>
+   <script>
+     var width=800, height=500, moveCount=0; 
+     var radius=20, duration=2000, dragCount=0;
+     var points1 = "50,50 200,50 240,30 90,30";
+     var points2 = "200,50 200,200 240,180 240,30";
+     var fillColors = ["red", "yellow", "blue"];
+     var circleColors = ["red", "yellow", "green", "blue"];
+
+     var transforms = ["scale(0.5, 0.5) skewX(70)", 
+                       "skewX(-40) scale(1.5, 2.0)", 
+                       "translate(80,80) rotate(50)", 
+                       "rotate(20) skewX(-60)"];
+
+     var drag = d3.behavior.drag()
+                  .origin(Object)
+                  .on('dragstart', dragStart) 
+                  .on('drag',      dragMove) 
+                  .on('dragend',   dragEnd);
+    
+     var svg = d3.select("body")
+                 .append("svg")
+                 .attr("width",  width)
+                 .attr("height", height);
+
+/*
+The next xlink snippet is from Chris Viau: 
+https://groups.google.com/forum/?fromgroups=#!topic/d3-js/Sh4ysLFBMRQ
+*/
+
+     var svg2 = d3.select("svg")
+                 .attr({
+                   "xmlns": "http://www.w3.org/2000/svg",
+                   // hack: doubling xmlns so it doesn"t disappear once in the DOM
+                   "xmlns:xmlns:xlink": "http://www.w3.org/1999/xlink", 
+                   version: "1.1"
+                 }); 
+
+     var g1 = svg.append("g")
+                 .attr("id", "g1")
+                 .call(drag);
+
+     // top face (parallelogram)
+     var polygon = g1.append("polygon")
+                      .attr("points", points1) 
+                      .attr("fill",   fillColors[1])
+                      .attr("stroke", "blue")
+                      .attr("stroke-width", 1);
+ 
+     // front face (rectangle)
+     g1.append("rect")
+        .attr("x", 50)
+        .attr("y", 50)
+        .attr("width",  150)
+        .attr("height", 150)
+        .attr("fill", fillColors[0])
+
+    // right face (parallelogram)
+    var polygon = g1.append("polygon")
+                     .attr("points", points2) 
+                     .attr("fill",   fillColors[2])
+                     .attr("stroke", "blue")
+                     .attr("stroke-width", 1);
+    
+   function dragStart(d) {}
+   function dragEnd(d)   { ++moveCount; }
+
+   function dragMove(d) {
+     var xPos = d3.event.sourceEvent.pageX;
+     var yPos = d3.event.sourceEvent.pageY;
+
+   //index = (++moveCount) % circleColors.length;
+     index = (moveCount) % circleColors.length;
+
+     svg.append("svg:use")
+           .attr("xlink:href", "#g1")
+           .on("mouseover",function() {
+
+              trans = transforms[(dragCount++) % transforms.length];
+
+              d3.select(this)
+                .attr("x", xPos)
+                .attr("y", yPos)
+                .transition()
+                .duration(duration) 
+                .attr("transform", function() {
+                   return trans;
+                }) 
+           })
+   }
+  </script>
+ </body>
+</html>
+

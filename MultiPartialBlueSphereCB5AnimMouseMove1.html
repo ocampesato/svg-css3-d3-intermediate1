@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8" />
+   <title>Create a Partial View of a Sphere</title>
+   <script src="d3.min.js"></script>
+ </head>
+
+ <body>
+   <script>
+     var width = 800, height = 500, duration=2000;
+     var mouseOverCount=0;
+
+     var svg = d3.select("body")
+                 .append("svg")
+                 .attr("width",  width)
+                 .attr("height", height) 
+
+/*
+The next xlink snippet is from Chris Viau: 
+https://groups.google.com/forum/?fromgroups=#!topic/d3-js/Sh4ysLFBMRQ
+*/
+
+     var svg2 = d3.select("svg")
+                 .attr({
+                   "xmlns": "http://www.w3.org/2000/svg",
+                   // hack: doubling xmlns so it doesn"t disappear once in the DOM 
+                   "xmlns:xmlns:xlink": "http://www.w3.org/1999/xlink", 
+                   version: "1.1"
+                 }); 
+
+     var defsElement = svg.append("svg:defs");
+
+     var checkerPattern1 = defsElement.append("svg:pattern")
+                       .attr("id", "checkerPattern1")
+                       .attr("width", 10)
+                       .attr("height", 10)
+                       .attr("patternUnits", "userSpaceOnUse");
+
+     checkerPattern1.append("rect")
+                       .attr("x",      0)
+                       .attr("y",      0)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "blue");
+
+     checkerPattern1.append("rect")
+                       .attr("x",      5)
+                       .attr("y",      0)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "red")
+
+     checkerPattern1.append("rect")
+                       .attr("x",      0)
+                       .attr("y",      5)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "red")
+
+     checkerPattern1.append("rect")
+                       .attr("x",      5)
+                       .attr("y",      5)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "blue")
+    
+     var checkerPattern2 = defsElement.append("svg:pattern")
+                       .attr("id", "checkerPattern2")
+                       .attr("width", 10)
+                       .attr("height", 10)
+                       .attr("patternUnits", "userSpaceOnUse")
+
+     checkerPattern2.append("rect")
+                       .attr("x",      0)
+                       .attr("y",      0)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "red")
+
+     checkerPattern2.append("rect")
+                       .attr("x",      5)
+                       .attr("y",      0)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "yellow")
+
+     checkerPattern2.append("rect")
+                       .attr("x",      0)
+                       .attr("y",      5)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "yellow")
+
+     checkerPattern2.append("rect")
+                       .attr("x",      5)
+                       .attr("y",      5)
+                       .attr("width",  5)
+                       .attr("height", 5)
+                       .attr("fill",   "red")
+
+     var blueCircle = defsElement.append("svg:radialGradient")
+                       .attr("id", "blueCircle")
+                       .attr("fx", "30%")
+                       .attr("fy", "30%")
+                       .attr("gradientUnits", "objectBoundingBox")
+
+     blueCircle.append("svg:stop")
+                 .attr("offset", "0%")
+                 .attr("stop-color", "#ffffff")
+
+     blueCircle.append("svg:stop")
+                 .attr("offset", "40%")
+                 .attr("stop-color", "#0000aa")
+    
+     blueCircle.append("svg:stop")
+                 .attr("offset", "100%")
+                 .attr("stop-color", "#000066")
+
+     defsElement.append("svg:circle")
+                  .attr("id", "3DBlueCircle")
+                  .attr("cx", 0)
+                  .attr("cy", 0)
+                  .attr("r",  120)
+                  .style("fill", "url(#blueCircle)")
+
+     defsElement.append("svg:ellipse")
+                  .attr("id", "topEllipse")
+                  .attr("cx", 0)
+                  .attr("cy", 0)
+                  .attr("rx", 20)
+                  .attr("ry", 60)
+                  .attr("opacity", 0.6)
+                  .style("fill", "url(#blueCircle)")
+
+     defsElement.append("svg:ellipse")
+                  .attr("id", "topEllipseCB")
+                  .attr("cx", 0)
+                  .attr("cy", 0)
+                  .attr("rx", 20)
+                  .attr("ry", 60)
+                  .attr("opacity", 0.4)
+                  .style("fill", "url(#checkerPattern1)")
+
+     defsElement.append("svg:path")
+                  .attr("id", "leftArc1")
+                  .attr("d", "m0,0 l0,-240 a200,200 0 0,0 0,240")
+                  .attr("opacity", 0.4)
+                  .style("fill", "black")
+
+     defsElement.append("svg:path")
+                  .attr("id", "leftArcCB1")
+                  .attr("d", "m0,0 l0,-240 a200,200 0 0,0 0,240")
+                  .attr("opacity", 0.6)
+                  .style("fill", "url(#checkerPattern1)")
+
+     defsElement.append("svg:path")
+                  .attr("id", "innerLeftArc1")
+                  .attr("d", "m0,0 l0,-180 a125,125 0 0,0 0,120")
+                  .attr("opacity", 0.5)
+                  .style("fill", "black")
+
+     defsElement.append("svg:path")
+                  .attr("id", "rightArc1")
+                  .attr("d", "m0,0 l0,-240 a125,125 0 0,1 0,240")
+                  .attr("opacity", 0.6)
+                  .style("fill", "gray")
+
+     defsElement.append("svg:path")
+                  .attr("id", "rightArcCB1")
+                  .attr("d", "m0,0 l0,-240 a125,125 0 0,1 0,240")
+                  .attr("opacity", 0.6)
+                  .style("fill", "url(#checkerPattern2)")
+
+     defsElement.append("svg:path")
+                  .attr("id", "innerRightArc1")
+                  .attr("d", "m0,0 l0,-180 a80,80 0 0,1 0,120")
+                  .attr("opacity", 0.5)
+                  .style("fill", "black")
+
+     defsElement.append("svg:path")
+                  .attr("id", "vLine1")
+                  .attr("d", "m0,0 l0,-240")
+                  .attr("opacity", 0.6)
+                  .style("fill", "white")
+
+     var outerG = svg.append("svg:g")
+                  .attr("id", "outerG")
+                  .attr("transform", "scale(1.0, 1.0)")
+       .on("click",function() {
+           d3.select(this)
+                  .attr("transform", "scale(0.5, 0.5)");
+       })
+
+     var g1 = outerG.append("svg:g")
+           .attr("id", "g1")
+           .attr("transform", "scale(1.0, 1.0)");
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#3DBlueCircle")
+           .attr("x", 160).attr("y", 160) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#leftArc1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#leftArcCB1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#innerLeftArc1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#rightArc1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#rightArcCB1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#innerRightArc1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#vLine1")
+           .attr("x", 160).attr("y", 280) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#topEllipse")
+           .attr("x", 60).attr("y", 160) 
+
+     g1.append("svg:use")
+           .attr("xlink:href", "#topEllipseCB")
+           .attr("x", 60).attr("y", 160) 
+
+     g1.on("mouseover", mouseover);
+
+     // g2: clone g1 and change the 'id' and 'transform'
+     var g2 = clone("g1");
+     g2.attr("id", "g2")
+       .attr("transform", "skew(50, -30)");
+     //.attr("transform", "translate(-15,10) scale(0.4, 0.6)")
+
+     g2.on("mouseover", mouseover);
+
+     var g3 = clone("g2");
+     g3.attr("id", "g3")
+       .attr("transform", "translate(120,20) scale(0.5, 0.2)")
+
+     g3.on("mouseover", mouseover);
+
+     var g4 = clone("g3");
+     g4.attr("id", "g4")
+       .attr("transform", "translate(120,80) scale(0.3, 0.5)")
+
+     g4.on("mouseover", mouseover);
+
+     var g5 = clone("g4");
+
+     g5.attr("id", "g5")
+       .attr("transform", "translate(-40,150) scale(1.2, 0.15)")
+
+     g5.on("mouseover", mouseover);
+
+     function clone(nodeId) {
+       var node = document.getElementById (nodeId);
+
+       return d3.select(node.parentNode.insertBefore(
+                    node.cloneNode(true), node.nextSibling));
+     }
+
+     function mouseover(d) {
+       this.parentNode.appendChild(this);
+     
+       d3.select(this)
+           .style("pointer-events", "none")
+         .transition()
+           .duration(3000)
+           .attr("fill", function() {
+             if(mouseOverCount % 2 == 0) {
+                return "red";
+             } else {
+                return "yellow";
+             } 
+           })  
+           .attr("transform", function() {
+             if(mouseOverCount % 2 == 0) {
+                return "translate(240,240)scale(12)rotate(180)"
+             } else {
+                return "translate(480,480)scale(6)rotate(-90)"
+             } 
+           })  
+         .transition()
+           .delay(1500)
+           .attr("transform", "translate(120,120)scale(0.5)")
+         //.style("fill-opacity", 0)
+         //.remove();
+
+        ++mouseOverCount;
+     }
+  </script>
+ </body>
+</html>
+

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <title>A 3D Multi-Bar Chart</title>
+   <script src="d3.min.js"></script>
+ </head>
+ <body>
+
+  <script>
+    window.requestAnimFrame = (function(){   
+      return window.requestAnimationFrame  ||    
+        window.webkitRequestAnimationFrame ||    
+        window.mozRequestAnimationFrame ||    
+        window.oRequestAnimationFrame  ||    
+        window.msRequestAnimationFrame  ||    
+        function(/* function */ callback, /* DOMElement */ element){   
+         //window.setTimeout(callback, 1000 / 60);   
+           window.setTimeout(callback, 1000);
+        };   
+    })();   
+
+    var duration=2000, randomScale=""; 
+    var randomX=0, randomY=0, tick=0, maxTick=10;
+
+    function renderD3() {
+      if(tick++ == 0) {
+        var width=800, height=500;
+        var basePointX=120, basePointY=0;
+        var currentX=0, currentY=0, s=0;
+        var minHeight=20, maxHeight=120;
+        var barCount=20, barWidth=12;
+        var slantX=barWidth/3, slantY=barWidth/3;
+        var rowCount=8, colCount=6, shiftX=0, shiftY=0;
+        var points1="", points2=""; 
+        var otherDirectionRow=0, interRowGapFactor=4;
+        var barHeights = new Array(barCount);
+        var multiBarHeights = new Array(rowCount);
+        var topColors  = ["#eeeeee", "#ffcccc", "#ccccff"];
+        var barColors  = ["#ff4444", "#ddbb44", "#4444ff"];
+        var sideColors = ["#4444cc", "#4444cc"];
+    
+        var svg = d3.select("body").append("svg")
+                    .attr("width",  width)
+                    .attr("height", height);
+       
+        var g1 = d3.select("svg").append("svg:g");
+        g1.attr("id", "g1") 
+          .attr("transform", "scale(1.0,1.0)")
+          .transition()
+          .duration(2000)
+          .attr("transform", function() {
+               var randX = Math.random()+0.2, randY = Math.random()+0.2;
+               return "scale("+randX+","+randY+")"; 
+           })
+    
+        for(var row=0; row<rowCount; row++) {
+           multiBarHeights[row] = new Array(barCount);
+    
+           for(var b=0; b<barCount; b++) {
+              barHeights[b] = Math.floor((maxHeight-minHeight)*Math.random()+minHeight); 
+              multiBarHeights[row][b] = barHeights[b];
+           }
+        }
+    
+        for(var row=rowCount-1; row>=0; row--) {
+           barHeights = multiBarHeights[row];
+           for(var b=0; b<barCount; b++) {
+              shiftX  = interRowGapFactor*otherDirectionRow*slantX;
+              shiftY  = interRowGapFactor*otherDirectionRow*slantY;
+              offsetX = basePointX+b*barWidth-shiftX;
+              offsetY = basePointY+(maxHeight-barHeights[b])+shiftY;
+    
+              // CCW from lower left vertex 
+              points1 = offsetX+","+offsetY+" "+
+                        (offsetX+barWidth)+","+offsetY+" "+
+                        (offsetX+barWidth+slantX)+","+(offsetY-slantY)+" "+
+                        (offsetX+0*barWidth+slantX)+","+(offsetY-slantY);
+    
+              // CW from lower left vertex 
+              points2 = (offsetX+barWidth)+","+offsetY+" "+
+                        (offsetX+barWidth+slantX)+","+(offsetY-slantY)+" "+
+                        (offsetX+barWidth+slantX)+","+(offsetY-slantY+barHeights[b])+" "+
+                        (offsetX+barWidth)+","+(offsetY+barHeights[b]);
+    
+              var gc = g1.append("svg:g");
+              // top face (parallelogram)
+              var polygon = gc.append("polygon")
+                               .attr("points", points1) 
+                               .attr("fill", topColors[(s+b+1)%topColors.length])
+           
+               // front face (rectangle)
+               gc.append("svg:rect")
+                 .attr("x", offsetX)
+                 .attr("y", offsetY)
+                 .attr("width",  barWidth)
+                 .attr("height", barHeights[b])
+                 .attr("fill",   barColors[(s+b)%barColors.length])
+    
+               gc.attr("height", barHeights[b])
+                 .on("mouseover", function(d) {
+                  var old = d3.select(this).attr("height"); 
+                  d3.select(this) 
+                    .transition().duration(2000)
+                    .attr("height", function(d) { return maxHeight*Math.random(); })
+               })
+          
+               // right face (parallelogram)
+               gc.append("polygon")
+                         .attr("points", points2) 
+                         .attr("fill", sideColors[(s+b+2)%sideColors.length])
+           }
+           ++otherDirectionRow;
+         }
+       } else {
+           d3.selectAll("g")
+              .transition()
+              .duration(duration) 
+              .attr("transform", function() {
+                 return randomScale;
+              })
+       }
+       }
+ 
+       function animateD3() {   
+          renderD3();   
+          randomX = 0.25+Math.random(); randomY = 0.25+Math.random(); 
+          randomScale = "scale("+randomX+","+randomY+")";
+   
+          if(tick < maxTick) {
+             window.setTimeout(animateD3, duration);
+          }
+       }   
+           
+       animateD3();
+   </script>
+ </body>
+</html>

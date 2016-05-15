@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <title>Mouse Events and Animation Effects </title>
+  <script src="d3.min.js"></script>
+
+  <style> 
+    body    { background-color: #444; }
+    ellipse { fill: #f88; stroke-width: 2px; }
+    rect    { fill: #88f; stroke-width: 2px; }
+  </style>
+</head>
+
+<body>
+  <script> 
+      var width=800,     height=500, 
+          rWidth=40,     rHeight=20, 
+          offsetX=100,   offsetY=100,
+          majorAxis=60,  minorAxis=40,
+          radiusX=20,    radiusY=20,
+          deltaX=10,     deltaY=10,
+          index=0,       duration=4000,
+          transitionX=80,transitionY=40,
+          opValues = [0.00001, 0.6, 1.0],
+          z = d3.scale.category20b();
+
+      var svg = d3.select("body")
+                  .append("svg:svg")
+                  .attr("width",  width)
+                  .attr("height", height)
+                  .on("mousemove", drawGraphics);
+
+      function drawGraphics() {
+        // current mouse location
+        var point  = d3.mouse(this);
+
+        // append a rectangle with animation 
+        svg.append("svg:rect")
+            .attr("x", point[0]-deltaX)
+            .attr("y", point[1]-deltaY)
+            .attr("height", rWidth)
+            .attr("width",  rHeight)
+            .attr("rx", radiusX)
+            .attr("ry", radiusY)
+            .style("stroke", z(++index))
+            .style("stroke-op", opValues[2])
+            .style("op", opValues[1])
+          .transition()
+            .duration(duration)
+            .ease("back")
+            .attr("x", point[0]-offsetX)
+            .attr("y", point[1]-offsetY)
+            .attr("width",  transitionX)
+            .attr("height", transitionY)
+            .style("stroke-op", opValues[0])
+            .style("op", opValues[0])
+            .remove();
+
+        // append an ellipse with animation 
+        svg.append("svg:ellipse")
+            .attr("cx", point[0]-deltaX)
+            .attr("cy", point[1]-deltaY)
+            .attr("rx", majorAxis)
+            .attr("ry", minorAxis)
+            .style("stroke", z(index))
+            .style("stroke-opacity", opValues[2])
+            .style("opacity", opValues[1])
+          .transition()
+            .duration(duration)
+            .ease("back")
+            .attr("cx", point[0]-offsetX)
+            .attr("cy", point[1]-offsetY)
+            .attr("rx", 1*majorAxis)
+            .attr("ry", 1*minorAxis)
+            .style("stroke-opacity", opValues[0])
+            .style("opacity", opValues[0])
+            .remove();
+      }
+  </script>
+</body>
+</html>
+
